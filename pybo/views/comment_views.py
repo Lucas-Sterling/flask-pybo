@@ -45,7 +45,7 @@ def modify_question(comment_id):
             'question.detail', question_id=comment.question.id), comment.id))
     return render_template('comment/comment_form.html', form=form)
 
-@bp.route('/delete/question/<int:comment_id>')
+@bp.route('/delete/question/<int:comment_id>', methods=['POST'])
 @login_required
 def delete_question(comment_id):
     comment = Comment.query.get_or_404(comment_id)
@@ -90,7 +90,7 @@ def modify_answer(comment_id):
 
     return render_template('comment/comment_form.html', form=form)
 
-@bp.route('/delete/answer/<int:comment_id>')
+@bp.route('/delete/answer/<int:comment_id>', methods=['POST'])
 @login_required
 def delete_answer(comment_id):
     comment = Comment.query.get_or_404(comment_id)

@@ -5,8 +5,6 @@ from sqlalchemy import MetaData
 import markdown
 from markupsafe import Markup
 
-import config
-
 naming_convention = {
     "ix": 'ix_%(column_0_label)s',
     "uq": "uq_%(table_name)s_%(column_0_name)s",
@@ -20,11 +18,11 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(config)
+    app.config.from_envvar('APP_CONFIG_FILE')
 
     # ORM
     db.init_app(app)
-    if app.config['SQLALCHEMY_DATABASE_URI'].startswith("sqlite"):
+    if app.config.get('SQLALCHEMY_DATABASE_URI', '').startswith("sqlite"):
         migrate.init_app(app, db, render_as_batch=True)
     else:
         migrate.init_app(app, db)
@@ -43,7 +41,6 @@ def create_app():
     from .filter import format_datetime
     app.jinja_env.filters['datetime'] = format_datetime
 
-    # ✅ 마크다운 필터
     @app.template_filter("markdown")
     def markdown_filter(text):
         return Markup(markdown.markdown(

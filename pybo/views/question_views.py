@@ -139,7 +139,7 @@ def modify(question_id):
         form = QuestionForm(obj=question)
     return render_template('question/question_form.html', form=form)
 
-@bp.route('/delete/<int:question_id>')
+@bp.route('/delete/<int:question_id>', methods=('POST',))
 @login_required
 def delete(question_id):
     question = Question.query.get_or_404(question_id)

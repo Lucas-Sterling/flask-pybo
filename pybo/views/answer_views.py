@@ -43,7 +43,7 @@ def modify(answer_id):
         form = AnswerForm(obj=answer)
     return render_template('answer/answer_form.html', answer=answer, form=form)
 
-@bp.route('/delete/<int:answer_id>')
+@bp.route('/delete/<int:answer_id>', methods=('POST',))
 @login_required
 def delete(answer_id):
     answer = Answer.query.get_or_404(answer_id)
